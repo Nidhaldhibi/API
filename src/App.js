@@ -1,23 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
-
+import { useState, useEffect } from "react";
+import "./App.css";
+import UsersList from "./componnents/UsersList";
+import axios from "axios";
 function App() {
+  const [usersList, setUserslist] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const getList = async () => {
+    setIsLoading(true);
+    try {
+      const res = await axios.get("https://jsonplaceholder.typicode.com/users");
+      console.log(res.data);
+      setIsLoading(false);
+      setUserslist(res.data);
+    } catch (err) {
+      setIsLoading(false);
+      console.log("error", err.message);
+      setError(err.message);
+    }
+  };
+  useEffect(() => {
+    getList();
+  }, []);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="containner">
+      <div> Users list </div>
+
+      <UsersList isLoading={isLoading} error={error} list={usersList} />
     </div>
   );
 }
