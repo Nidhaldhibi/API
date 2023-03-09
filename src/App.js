@@ -24,7 +24,7 @@ function App() {
   }, []);
   return (
     <div className="containner">
-      <div> Users list </div>
+      <div> </div>
 
       <UsersList isLoading={isLoading} error={error} list={usersList} />
     </div>
